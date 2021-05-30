@@ -1,5 +1,5 @@
-package com.company;
-
+//package com.company;
+package com.example.java.OrderSystem;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.*;
@@ -11,8 +11,6 @@ public class Main {
 
         keypad.welcomeCustomer();
 
-
-
     }
 }
 
@@ -21,11 +19,12 @@ class Keypad{
     private Scanner input = new Scanner(System.in);
     private Product product = new Product();
     private Cart cart = new Cart();
+    private OrderSystem orderSystem = new OrderSystem();
 
     public void welcomeCustomer(){
 
         System.out.println("Hello in our brand new restaurant...\nPlease select an option below: ");
-        System.out.print("menu - 1 | cart - 2 | special offers - 3\n: ");
+        System.out.print("menu - 1 | cart - 2 | close - 3\n: ");
         char choice = input.nextLine().charAt(0);
 
        if (validateWelcomeChoice(choice)) printOptions(choice);
@@ -114,6 +113,9 @@ class Keypad{
                         Customer customer = new Customer();
                         Order order = new Order(customer,cart);
                         System.out.println("Your order:\n" + order);
+                        OrderSystem.setOrders(order);
+                        Keypad keypad = new Keypad();
+                        keypad.welcomeCustomer();
                         break;
                     case 'q':
                         welcomeCustomer();
@@ -124,6 +126,7 @@ class Keypad{
                 }
                 break;
             case '3':
+                System.out.println(orderSystem.toString());;
                 break;
         }
     }
@@ -155,8 +158,8 @@ class Order{
     public String toString() {
         return "Order{" +
                 "customer=" + customer +
-                ", cart=" + cart +
-                '}';
+                ", cart=" + cart.getProductNames() + ", price = " + cart.getTotalPrice().divide(BigDecimal.valueOf(2))+
+                "}\n";
     }
 }
 
@@ -164,22 +167,20 @@ class Customer{
 
     private int recipeNumber;
     private final Random random = new Random();
+    private ArrayList<Integer> list = new ArrayList<Integer>();
 
-    public int generateRecipeNumber(){
-        ArrayList<Integer> list = new ArrayList<Integer>();
+    public Customer() {
         for(int i=0; i<15; i++){
             int num = random.nextInt(100)+1;
             if (!list.contains(num)) list.add(num);
         }
         recipeNumber = random.nextInt(list.size());
-
-        return recipeNumber;
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "recipeNumber=" + generateRecipeNumber() +
+                "recipeNumber=" + recipeNumber +
                 '}';
     }
 }
@@ -187,8 +188,7 @@ class Customer{
 class Cart{
     private List<String> productsName = new LinkedList<>();
     private List<BigDecimal> productsPrice = new LinkedList<>();
-    private BigDecimal totalPrice = new BigDecimal(0);
-    private BigDecimal sum = getTotalPrice();
+    private BigDecimal totalPrice = new BigDecimal("0.00");
 
     public void setProductsName(String productName) {
         this.productsName.add(productName);
@@ -208,7 +208,7 @@ class Cart{
 
     public BigDecimal getTotalPrice(){
         for (BigDecimal x : productsPrice){
-            totalPrice = new BigDecimal(x.longValue());
+            totalPrice = totalPrice.add(new BigDecimal(String.valueOf(x)));
         }
         return totalPrice;
     }
@@ -216,7 +216,7 @@ class Cart{
     @Override
     public String toString() {
         return "Your cart contains: " + productsName +
-                "\nTotal price: " + productsPrice + " = " + sum;
+                "\nTotal price: " + productsPrice + " = " + getTotalPrice();
     }
 }
 
@@ -234,7 +234,7 @@ class Product{
     private final BigDecimal shake_price = BigDecimal.valueOf(5.50);
     private final BigDecimal coke_price = BigDecimal.valueOf(3.99);
     private final BigDecimal taco_price = BigDecimal.valueOf(8.99);
-    private final BigDecimal icecream_price = BigDecimal.valueOf(5.99);
+    private final BigDecimal icecream_price = BigDecimal.valueOf(10);
 
     public String getCheeseburger() {
         return cheeseburger;
@@ -306,4 +306,24 @@ class Product{
                 "\n6. " + icecream + " - " + icecream_price;
     }
 
+}
+
+class OrderSystem{
+
+    private static Deque<Order> orders = new ArrayDeque<>();
+
+    public static void setOrders(Order order) {
+        orders.offer(order);
+    }
+
+    public Deque<Order> getOrders() {
+        return orders;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderSystem{" +
+                "orders=" + orders +
+                "}";
+    }
 }
