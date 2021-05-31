@@ -1,7 +1,5 @@
-//package com.company;
 package com.example.java.OrderSystem;
 import java.math.BigDecimal;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Main {
@@ -20,10 +18,12 @@ class Keypad{
     private Product product = new Product();
     private Cart cart = new Cart();
     private OrderSystem orderSystem = new OrderSystem();
+    private String productName;
+    private BigDecimal productPrice;
 
     public void welcomeCustomer(){
 
-        System.out.println("Hello in our brand new restaurant...\nPlease select an option below: ");
+        System.out.println("\nHello in our brand new restaurant...\nPlease select an option below: ");
         System.out.print("menu - 1 | cart - 2 | close - 3\n: ");
         char choice = input.nextLine().charAt(0);
 
@@ -40,93 +40,100 @@ class Keypad{
                 System.out.println("-------------");
                 System.out.print("Add to cart[1-6] or quit['q']: ");
                 char optionMenu = input.nextLine().charAt(0);
-                String productName;
-                BigDecimal productPrice;
 
-
-                if (validateMenuChoice(optionMenu) && optionMenu != 'q'){
-                    switch (optionMenu){
-                        case '1':
-                                System.out.println("You picked cheeseburger");
-                                productName = product.getCheeseburger();
-                                productPrice = product.getCheeseburger_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-                            case '2':
-                                System.out.println("You picked fries");
-                                productName = product.getFries();
-                                productPrice = product.getFries_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-                            case '3':
-                                System.out.println("You picked shake");
-                                productName = product.getShake();
-                                productPrice = product.getShake_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-                            case '4':
-                                System.out.println("You picked coke");
-                                productName = product.getCoke();
-                                productPrice = product.getCoke_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-                            case '5':
-                                System.out.println("You picked taco");
-                                productName = product.getTaco();
-                                productPrice = product.getTaco_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-                            case '6':
-                                System.out.println("You picked icecream");
-                                productName = product.getIcecream();
-                                productPrice = product.getIcecream_price();
-                                cart.setProductsName(productName);
-                                cart.setProductsFinalPrice(productPrice);
-                                printOptions(choice);
-                                break;
-
-                            default:
-                                printOptions(choice);
-                                break;
-
-                    }
-                }
-                else welcomeCustomer();
-                break;
-            case '2':
-                System.out.println("---------------------");
-                System.out.println(cart.toString());
-                System.out.println("Make an order['o'] or quit['q']: ");
-                optionMenu = input.nextLine().charAt(0);
                 switch (optionMenu){
-                    case 'o':
-                        Customer customer = new Customer();
-                        Order order = new Order(customer,cart);
-                        System.out.println("Your order:\n" + order);
-                        OrderSystem.setOrders(order);
-                        Keypad keypad = new Keypad();
-                        keypad.welcomeCustomer();
-                        break;
-                    case 'q':
-                        welcomeCustomer();
-                        break;
-                    default:
-                        printOptions(choice);
-                        break;
+                    case '1':                                               /// wyswietlanie produktow oraz mozliwosc dodania do koszyka
+                            System.out.println("You picked cheeseburger");
+                            productName = product.getCheeseburger();
+                            productPrice = product.getCheeseburger_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+                        case '2':
+                            System.out.println("You picked fries");
+                            productName = product.getFries();
+                            productPrice = product.getFries_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+                        case '3':
+                            System.out.println("You picked shake");
+                            productName = product.getShake();
+                            productPrice = product.getShake_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+                        case '4':
+                            System.out.println("You picked coke");
+                            productName = product.getCoke();
+                            productPrice = product.getCoke_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+                        case '5':
+                            System.out.println("You picked taco");
+                            productName = product.getTaco();
+                            productPrice = product.getTaco_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+                        case '6':
+                            System.out.println("You picked icecream");
+                            productName = product.getIcecream();
+                            productPrice = product.getIcecream_price();
+                            cart.setProductsName(productName);
+                            cart.setProductsFinalPrice(productPrice);
+                            printOptions(choice);
+                            break;
+
+                        default:
+                            if (optionMenu == 'q') welcomeCustomer();
+                            else printOptions(choice);
+                            break;
+
                 }
                 break;
-            case '3':
-                System.out.println(orderSystem.toString());;
+            case '2':                               /// sprawdzenie co znajduje sie w koszyku oraz mozliwosc zlozenia zamowienia
+                if (productName != null) {
+                    System.out.println("---------------------");
+                    System.out.println(cart.toString());
+                    System.out.println("Make an order['o'] or quit['q']: ");
+                    optionMenu = input.nextLine().charAt(0);
+                    switch (optionMenu) {
+                        case 'o':
+                            Customer customer = new Customer();
+                            Order order = new Order(customer, cart);
+                            System.out.println("Your order:\n" + order);
+                            OrderSystem.setOrders(order);
+                            Keypad keypad = new Keypad();
+                            keypad.welcomeCustomer();
+                            break;
+                        case 'q':
+                            welcomeCustomer();
+                            break;
+                        default:
+                            printOptions(choice);
+                            break;
+                    }
+                }else {
+                    System.out.println("Your cart does not contain any product. Go and pick one");
+                    welcomeCustomer();
+                }
+                break;
+            case '3':                                   /// zakonczenie sesji oraz wyswietlenie wszystkich zamowien
+                if (productName != null)                //// po kolei w kolejce FIFO
+                System.out.println("\n###########################################\n");
+                System.out.println(orderSystem.toString());
+                orderSystem.getAnotherOrder();
+                break;
+
+            default:
+                welcomeCustomer();
                 break;
         }
     }
@@ -136,13 +143,7 @@ class Keypad{
         else return false;
     }
 
-    public boolean validateMenuChoice(char choice){
-        if(choice == '1' || choice == '2' || choice == '3' || choice == '4' || choice == '5' || choice == '6') return true;
-        else return false;
-    }
-
 }
-
 
 class Order{
 
@@ -158,8 +159,8 @@ class Order{
     public String toString() {
         return "Order{" +
                 "customer=" + customer +
-                ", cart=" + cart.getProductNames() + ", price = " + cart.getTotalPrice().divide(BigDecimal.valueOf(2))+
-                "}\n";
+                ", cart=" + cart +
+                '}';
     }
 }
 
@@ -167,7 +168,7 @@ class Customer{
 
     private int recipeNumber;
     private final Random random = new Random();
-    private ArrayList<Integer> list = new ArrayList<Integer>();
+    private ArrayList<Integer> list = new ArrayList<>();
 
     public Customer() {
         for(int i=0; i<15; i++){
@@ -207,6 +208,7 @@ class Cart{
     }
 
     public BigDecimal getTotalPrice(){
+        totalPrice = BigDecimal.valueOf(0);
         for (BigDecimal x : productsPrice){
             totalPrice = totalPrice.add(new BigDecimal(String.valueOf(x)));
         }
@@ -320,9 +322,17 @@ class OrderSystem{
         return orders;
     }
 
+    public void getAnotherOrder(){
+        for(Order tempOrder : orders){
+            System.out.println("\nAnother order in the queue is: ");
+            tempOrder = orders.poll();
+            System.out.println(tempOrder);
+        }
+    }
+
     @Override
     public String toString() {
-        return "OrderSystem{" +
+        return "\nOrderSystem{" +
                 "orders=" + orders +
                 "}";
     }
