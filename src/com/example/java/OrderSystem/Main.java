@@ -6,7 +6,6 @@ public class Main {
 
     public static void main(String[] args) {
         Keypad keypad = new Keypad();
-
         keypad.welcomeCustomer();
 
     }
@@ -35,14 +34,14 @@ class Keypad{
     public void printOptions(char choice){
 
         switch (choice){
-            case '1':
+            case '1':                                       /// wyswietlanie produktow oraz mozliwosc dodania do koszyka
                 System.out.println(product.listMenu());
                 System.out.println("-------------");
                 System.out.print("Add to cart[1-6] or quit['q']: ");
                 char optionMenu = input.nextLine().charAt(0);
 
                 switch (optionMenu){
-                    case '1':                                               /// wyswietlanie produktow oraz mozliwosc dodania do koszyka
+                    case '1':
                             System.out.println("You picked cheeseburger");
                             productName = product.getCheeseburger();
                             productPrice = product.getCheeseburger_price();
@@ -126,9 +125,9 @@ class Keypad{
                 }
                 break;
             case '3':                                   /// zakonczenie sesji oraz wyswietlenie wszystkich zamowien
-                if (productName != null)                //// po kolei w kolejce FIFO
-                System.out.println("\n###########################################\n");
+                System.out.println("\n###########################################\n"); //// po kolei w kolejce FIFO
                 System.out.println(orderSystem.toString());
+                if (orderSystem.getOrders().size() == 0) welcomeCustomer();
                 orderSystem.getAnotherOrder();
                 break;
 
@@ -153,6 +152,19 @@ class Order{
     public Order(Customer customer, Cart cart) {
         this.customer = customer;
         this.cart = cart;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(customer, order.customer) && Objects.equals(cart, order.cart);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customer, cart);
     }
 
     @Override
