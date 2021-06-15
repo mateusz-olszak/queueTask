@@ -5,28 +5,21 @@ import java.util.Random;
 
 class Customer {
 
-    private int recipeNumber;
-
-    private int generateRecipeNumber(){
+    public int generateRecipeNumber(){
         Random random = new Random();
         ArrayList<Integer> list = new ArrayList<>();
-        int num = random.nextInt(100) + 1;
 
-        if (!list.contains(num)) list.add(num);
-        else list.add(generateRecipeNumber());
+        while(list.size()!=50){
+            int num = random.nextInt(100)+1;
+            if (!list.contains(num))
+                list.add(num);
+        }
 
         int index = random.nextInt(list.size());
+        int recipeNumber= list.get(index);
 
-        recipeNumber = list.get(index);
+
 
         return recipeNumber;
-    }
-
-    @Override
-    public String toString() {
-        return generateRecipeNumber() + ", ";
-//        return "Customer{" +
-//                "recipeNumber=" + generateRecipeNumber() +
-//                '}';
     }
 }

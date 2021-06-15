@@ -4,12 +4,15 @@ import java.util.Objects;
 
 class Order {
 
-    private Customer customer;
     private Cart cart;
+    private int recipeNumber;
 
-    public Order(Customer customer, Cart cart) {
-        this.customer = customer;
+    public void setCart(Cart cart){
         this.cart = cart;
+    }
+
+    public void setRecipeNumber(int recipeNumber) {
+        this.recipeNumber = recipeNumber;
     }
 
     @Override
@@ -17,18 +20,19 @@ class Order {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
-        return Objects.equals(customer, order.customer) && Objects.equals(cart, order.cart);
+        return Objects.equals(cart, order.cart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(customer, cart);
+        return Objects.hash(cart);
     }
 
     @Override
     public String toString() {
+
         return "Order{" +
-                "customer=" + customer +
+                "recipeNumber=" + recipeNumber +
                 ", cart=" + cart +
                 '}';
     }

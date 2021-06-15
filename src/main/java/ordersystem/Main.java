@@ -10,8 +10,8 @@ public class Main {
 
         Customer customer = new Customer();
 
-        for(int i=0; i<30; i++){
-            System.out.print(customer.toString());
+        for (int i=0; i<30; i++){
+            System.out.print(customer.generateRecipeNumber() + ", ");
         }
 
     }

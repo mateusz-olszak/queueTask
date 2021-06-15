@@ -9,9 +9,9 @@ class Keypad {
     private Product product = new Product();
     private Cart cart = new Cart();
     private OrderSystem orderSystem = new OrderSystem();
+    private Customer customer = new Customer();
 
     public void welcomeCustomer() {
-
         System.out.println("\nHello in our brand new restaurant...\nPlease select an option below: ");
         System.out.print("menu - 1 | cart - 2 | close - 3\n: ");
         char choice = input.nextLine().charAt(0);
@@ -65,12 +65,7 @@ class Keypad {
                     optionMenu = input.nextLine().charAt(0);
                     switch (optionMenu) {
                         case 'o':
-                            Customer customer = new Customer();
-                            Order order = new Order(customer, cart);
-                            System.out.println("Your order:\n" + order);
-                            OrderSystem.setOrders(order);
-                            Keypad keypad = new Keypad();
-                            keypad.welcomeCustomer();
+                            printCartAndOrder();
                             break;
                         case 'q':
                             welcomeCustomer();
@@ -95,6 +90,16 @@ class Keypad {
                 welcomeCustomer();
                 break;
         }
+    }
+
+    private void printCartAndOrder() {
+        Order order = new Order();
+        order.setCart(cart);
+//        order.setRecipeNumber(customer.generateRecipeNumber());
+        System.out.println("Your order:\n" + order);
+        orderSystem.setOrders(order);
+        cart = new Cart();
+        welcomeCustomer();
     }
 
     private void printProducts(char choice,String productName, BigDecimal productPrice) {
