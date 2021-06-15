@@ -1,6 +1,8 @@
 package ordersystem;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 class Keypad {
@@ -10,6 +12,7 @@ class Keypad {
     private Cart cart = new Cart();
     private OrderSystem orderSystem = new OrderSystem();
     private Customer customer = new Customer();
+    private List<Integer> list = customer.generateRecipeNumber();
 
     public void welcomeCustomer() {
         System.out.println("\nHello in our brand new restaurant...\nPlease select an option below: ");
@@ -93,9 +96,14 @@ class Keypad {
     }
 
     private void printCartAndOrder() {
+        Random random = new Random();
         Order order = new Order();
+
+        int index = random.nextInt(list.size());
+        int recipeNumber = list.get(index);
+        order.setRecipeNumber(recipeNumber);
+        list.remove(index);
         order.setCart(cart);
-//        order.setRecipeNumber(customer.generateRecipeNumber());
         System.out.println("Your order:\n" + order);
         orderSystem.setOrders(order);
         cart = new Cart();

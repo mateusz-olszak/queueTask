@@ -1,11 +1,13 @@
 package ordersystem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 class Customer {
 
-    public int generateRecipeNumber(){
+    public List<Integer> generateRecipeNumber(){
         Random random = new Random();
         ArrayList<Integer> list = new ArrayList<>();
 
@@ -15,11 +17,6 @@ class Customer {
                 list.add(num);
         }
 
-        int index = random.nextInt(list.size());
-        int recipeNumber= list.get(index);
-
-
-
-        return recipeNumber;
+        return list;
     }
 }
